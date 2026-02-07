@@ -35,7 +35,7 @@ namespace LizardKit.Audio
         public void PlayClipLocally(string clipname, float jiggle = 0.1f)
         {
             var clip = clips.FirstOrDefault(a => a.name == clipname);
-            var jigglePitch = 1f + (Random.Range(-100, 100) * (jiggle / 100f));
+            var jigglePitch = 1f + (UnityEngine.Random.Range(-100, 100) * (jiggle / 100f));
             foreach (var player in _sources)
             {
                 if (player.isPlaying) continue;
@@ -50,7 +50,7 @@ namespace LizardKit.Audio
         public static void PlayClip(AudioClip clip, float jiggle = 0.1f)
         {
             if (_sources == null) return;
-            var jigglePitch = 1f + (Random.Range(-100, 100) * (jiggle / 100f));
+            var jigglePitch = 1f + (UnityEngine.Random.Range(-100, 100) * (jiggle / 100f));
             foreach (var player in _sources)
             {
                 if (player.isPlaying) continue;

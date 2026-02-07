@@ -22,7 +22,7 @@ namespace LizardKit.Settings
         protected override void ValueChanged(float val)
         {
             SoundEffectHandler.Volume = val;
-            var test = TestEffects[Random.Range(0,TestEffects.Count)];
+            var test = TestEffects[UnityEngine.Random.Range(0,TestEffects.Count)];
             SoundEffectHandler.PlayClip(test);
             PlayerPrefs.SetFloat("sfx_volume", val);
             PlayerPrefs.Save();
