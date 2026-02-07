@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LizardKit.Random;
 
-namespace LizardKit.Scripts.BaseExtensions
+namespace LizardKit.BaseExtensions
 {
         public static class ListExtensions
     {
         // Extension method to shuffle a list with an optional seed
         public static void Shuffle<T>(this IList<T> list, int? seed = null)
         {
-            var rng = seed.HasValue ? new Random(seed.Value) : new Random();
+            var rng = seed.HasValue ? new System.Random(seed.Value) : new System.Random();
             var n = list.Count;
 
             for (var i = n - 1; i > 0; i--)
@@ -35,6 +36,11 @@ namespace LizardKit.Scripts.BaseExtensions
             if (list == null || list.Count == 0)
             {
                 return default;
+            }
+            if (RandomHandler.Rand != null)
+            {
+                var seededIndex = RandomHandler.Rand.Next(0, list.Count);
+                return list[seededIndex];
             }
             var index = UnityEngine.Random.Range(0, list.Count);
             return list[index];
