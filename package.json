@@ -1,6 +1,6 @@
 {
   "name": "com.lizardkit.core",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "displayName": "LizardKit",
   "description": "This is the core package for using BranchMaker API, a cloud-based story writing tool.",
   "unity": "2019.1",
