@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace LizardKit.Scaffolding
 {
-    public class ClassCollectionUtil
+    public static class ClassCollectionUtil
     {
-        private static List<Type> GetAllConcreteSubclassesOf<TBase>()
+        public static List<Type> GetAllConcreteSubclassesOf<TBase>()
         {
             var baseType = typeof(TBase);
 
