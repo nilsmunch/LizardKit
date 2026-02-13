@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 namespace LizardKit.DebugButton
 {
-    [CustomEditor(typeof(Object), true), CanEditMultipleObjects]
+    [CustomEditor(typeof(Object), true)]
     internal class ObjectEditor : UnityEditor.Editor
     {
         private ButtonsDrawer _buttonsDrawer;
@@ -35,34 +35,33 @@ namespace LizardKit.DebugButton
 
         private void DrawPopulatorButtons()
         {
-            foreach (var t in targets)
+            var targetObject = target;
+
+            var fields = targetObject.GetType()
+                .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            foreach (var field in fields)
             {
-                var fields = t.GetType()
-                    .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (!Attribute.IsDefined(field, typeof(PopulatorButtonAttribute)))
+                    continue;
 
-                foreach (var field in fields)
+                if (!typeof(IList).IsAssignableFrom(field.FieldType))
+                    continue;
+
+                EditorGUILayout.Space();
+
+                if (GUILayout.Button($"Populate {field.Name}"))
                 {
-                    if (!Attribute.IsDefined(field, typeof(PopulatorButtonAttribute)))
-                        continue;
+                    var list = field.GetValue(targetObject) as IList;
+                    var elementType = field.FieldType.GetGenericArguments()[0];
 
-                    if (!typeof(IList<>).IsAssignableFrom(field.FieldType))
-                        continue;
+                    var method = typeof(PopulatorUtility)
+                        .GetMethod("Populate")
+                        .MakeGenericMethod(elementType);
 
-                    EditorGUILayout.Space();
+                    method.Invoke(null, new object[] { list });
 
-                    if (GUILayout.Button($"Populate {field.Name}"))
-                    {
-                        var list = field.GetValue(t) as IList;
-                        var elementType = field.FieldType.GetGenericArguments()[0];
-
-                        var method = typeof(PopulatorUtility)
-                            .GetMethod("Populate")
-                            .MakeGenericMethod(elementType);
-
-                        method.Invoke(null, new object[] { list });
-
-                        EditorUtility.SetDirty(t);
-                    }
+                    EditorUtility.SetDirty(targetObject);
                 }
             }
         }
