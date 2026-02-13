@@ -28,7 +28,7 @@ namespace LizardKit.Credits
         {
             yield return new WaitForEndOfFrame();
             var displayHeight = namesLabel.preferredHeight + 70;
-            scrollSpace.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, displayHeight);
+            if (scrollSpace) scrollSpace.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, displayHeight);
         }
         private void Awake()
         {
