@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -21,6 +23,25 @@ namespace LizardKit.Populator
 
                 if (asset) targetList.Add(asset);
             }
+        }
+        
+        public static IList Populate(Type type)
+        {
+            var listType = typeof(List<>).MakeGenericType(type);
+            var targetList = (IList)Activator.CreateInstance(listType);
+
+            var guids = AssetDatabase.FindAssets($"t:{type.Name}");
+
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var asset = AssetDatabase.LoadAssetAtPath(path, type);
+
+                if (asset != null)
+                    targetList.Add(asset);
+            }
+
+            return targetList;
         }
     }
 }

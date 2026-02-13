@@ -8,7 +8,7 @@ namespace LizardKit.Samples.Scripts
     public class PopulatorExample : MonoBehaviour
     {
         [PopulatorButton]
-        public List<Actor> ActorPool = new();
+        public List<PopulatorExampleObject> ItemPool = new();
 
         [Button]
         public void Hello()
@@ -19,7 +19,7 @@ namespace LizardKit.Samples.Scripts
     }
 
     [CreateAssetMenu]
-    public class Actor : ScriptableObject
+    public class PopulatorExampleObject : ScriptableObject
     {
     }
 }

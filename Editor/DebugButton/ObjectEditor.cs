@@ -52,14 +52,28 @@ namespace LizardKit.DebugButton
 
                 if (GUILayout.Button($"Populate {field.Name}"))
                 {
-                    var list = field.GetValue(targetObject) as IList;
                     var elementType = field.FieldType.GetGenericArguments()[0];
 
-                    var method = typeof(PopulatorUtility)
-                        .GetMethod("Populate")
-                        .MakeGenericMethod(elementType);
+                    var serializedObj = new SerializedObject(targetObject);
+                    var prop = serializedObj.FindProperty(field.Name);
 
-                    method.Invoke(null, new object[] { list });
+                    if (prop != null && prop.isArray)
+                    {
+                        prop.ClearArray();
+
+                        var populatedList = PopulatorUtility.Populate(elementType);
+
+                        int index = 0;
+                        foreach (var item in (IList)populatedList)
+                        {
+                            prop.InsertArrayElementAtIndex(index);
+                            prop.GetArrayElementAtIndex(index).objectReferenceValue = (UnityEngine.Object)item;
+                            index++;
+                        }
+
+                        serializedObj.ApplyModifiedProperties();
+                    }
+
 
                     EditorUtility.SetDirty(targetObject);
                 }
