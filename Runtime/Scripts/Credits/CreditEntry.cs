@@ -1,6 +1,6 @@
 namespace LizardKit.Credits
 {
-    public abstract class CreditEntry
+    public class CreditEntry
     {
         public readonly string Title;
         public readonly string Name;

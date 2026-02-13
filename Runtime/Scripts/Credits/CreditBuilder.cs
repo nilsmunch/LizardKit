@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace LizardKit.Credits
 {
-    public class CreditBuilder : MonoBehaviour
+    public abstract class CreditBuilder : MonoBehaviour
     {
         public TMP_Text titleLabel;
         public TMP_Text namesLabel;
         public RectTransform scrollSpace;
 
-        private List<CreditEntry> GetCredits()
+        protected virtual List<CreditEntry> GetCredits()
         {
             var credits = new List<CreditEntry>();
             return credits;
@@ -36,7 +36,7 @@ namespace LizardKit.Credits
         }
 
         [Button]
-        private void BuildCredits()
+        protected virtual void BuildCredits()
         {
             var creditString = "";
             foreach (var credit in GetCredits())
