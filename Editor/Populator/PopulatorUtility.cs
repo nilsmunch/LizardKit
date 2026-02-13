@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace LizardKit.Populator
 {
+    #if UNITY_EDITOR
     public static class PopulatorUtility
     {
         public static void Populate<T>(List<T> targetList) where T : ScriptableObject
@@ -44,4 +45,5 @@ namespace LizardKit.Populator
             return targetList;
         }
     }
+    #endif
 }
