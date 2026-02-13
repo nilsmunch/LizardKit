@@ -1,6 +1,6 @@
-namespace TricksForTreats.Credits
+namespace LizardKit.Credits
 {
-    public class CreditEntry
+    public abstract class CreditEntry
     {
         public readonly string Title;
         public readonly string Name;

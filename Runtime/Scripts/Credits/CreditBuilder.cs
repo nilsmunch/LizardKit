@@ -5,15 +5,15 @@ using LizardKit.DebugButton;
 using TMPro;
 using UnityEngine;
 
-namespace TricksForTreats.Credits
+namespace LizardKit.Credits
 {
     public class CreditBuilder : MonoBehaviour
     {
-        public TMP_Text TitleLabel;
-        public TMP_Text NamesLabel;
-        public RectTransform ScrollSpace;
+        public TMP_Text titleLabel;
+        public TMP_Text namesLabel;
+        public RectTransform scrollSpace;
 
-        protected virtual List<CreditEntry> GetCredits()
+        private List<CreditEntry> GetCredits()
         {
             var credits = new List<CreditEntry>();
             return credits;
@@ -27,8 +27,8 @@ namespace TricksForTreats.Credits
         private IEnumerator BuildRect()
         {
             yield return new WaitForEndOfFrame();
-            var displayHeight = NamesLabel.preferredHeight + 70;
-            ScrollSpace.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, displayHeight);
+            var displayHeight = namesLabel.preferredHeight + 70;
+            scrollSpace.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, displayHeight);
         }
         private void Awake()
         {
@@ -36,7 +36,7 @@ namespace TricksForTreats.Credits
         }
 
         [Button]
-        protected virtual void BuildCredits()
+        private void BuildCredits()
         {
             var creditString = "";
             foreach (var credit in GetCredits())
@@ -47,9 +47,9 @@ namespace TricksForTreats.Credits
                     creditString += "\n";
                 }
             }
-            TitleLabel.text = creditString;
+            titleLabel.text = creditString;
             var namesString = GetCredits().Aggregate("", (current, credit) => current + $"{credit.Name}\n");
-            NamesLabel.text = namesString.Trim();
+            namesLabel.text = namesString.Trim();
         }
     }
 }
