@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GeckoKit.Populator
+namespace LizardKit.Populator
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class PopulatorButtonAttribute : PropertyAttribute

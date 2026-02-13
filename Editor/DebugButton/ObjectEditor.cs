@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using GeckoKit.Populator;
+using LizardKit.Populator;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 #if UNITY_EDITOR
-namespace LizardKit.DebugButton.Editor
+namespace LizardKit.DebugButton
 {
     [CustomEditor(typeof(Object), true), CanEditMultipleObjects]
     internal class ObjectEditor : UnityEditor.Editor

@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 
 #if UNITY_EDITOR
-namespace LizardKit.DebugButton.Editor
+namespace LizardKit.DebugButton
 {
     public class ButtonsDrawer
     {

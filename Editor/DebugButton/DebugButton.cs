@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 #if UNITY_EDITOR
-namespace LizardKit.DebugButton.Editor
+namespace LizardKit.DebugButton
 {
     public class DebugButton
     {
