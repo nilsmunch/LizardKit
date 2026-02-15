@@ -21,7 +21,6 @@ namespace LizardKit.Settings
         {
             if (!MusicManager.Instance) return;
             MusicManager.Instance.Source.volume = val;
-            Debug.Log("Volume changed to "+val);
             PlayerPrefs.SetFloat("bgm_volume", val);
             PlayerPrefs.Save();
         }

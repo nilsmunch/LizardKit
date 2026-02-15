@@ -21,6 +21,7 @@ namespace LizardKit.Settings
             AudioListener.volume = val;
             SoundEffectHandler.Play("WoodClick");
             PlayerPrefs.SetFloat("master_volume",val);
+            PlayerPrefs.Save();
         }
     }
 }
