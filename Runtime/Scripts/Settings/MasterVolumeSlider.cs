@@ -7,7 +7,7 @@ namespace LizardKit.Settings
     {
         public static void Preload()
         {
-            AudioListener.volume = PlayerPrefs.GetFloat("master_volume");
+            AudioListener.volume = PlayerPrefs.GetFloat("master_volume", 0.5f);
         }
 
         protected override void Awake()
