@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 namespace LizardKit.DebugButton
 {
-    [CustomEditor(typeof(Object), true)]
+    [CustomEditor(typeof(Object), true, isFallback = true)]
     internal class ObjectEditor : UnityEditor.Editor
     {
         private ButtonsDrawer _buttonsDrawer;
