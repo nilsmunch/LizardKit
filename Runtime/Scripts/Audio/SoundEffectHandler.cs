@@ -61,6 +61,20 @@ namespace LizardKit.Audio
                 return;
             }
         }
+        public static void PlayClipWithPitch(string clipname, float pitch = 0.1f)
+        {
+            if (_sources == null) return;
+            var clip = Instance.clips.FirstOrDefault(a => a.name == clipname);
+            foreach (var player in _sources)
+            {
+                if (player.isPlaying) continue;
+                player.pitch = pitch;
+                player.clip = clip;
+                player.volume = Volume;
+                player.Play();
+                return;
+            }
+        }
         public static void Play(string clipname)
         {
             if (!Instance) return;
