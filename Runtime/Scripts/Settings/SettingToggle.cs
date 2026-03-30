@@ -20,6 +20,12 @@ namespace LizardKit.Settings
         {
             var key = SettingKey(); 
             _toggle = GetComponent<Toggle>();
+            if (!_toggle)
+            {
+                Debug.LogError($"Toggle not found in {gameObject.name}");
+                return;
+            }
+
             _toggle.isOn = PlayerPrefs.GetInt(key, (ShouldStartEnabled() ? 1:0)) == 1;
             _toggle.onValueChanged.AddListener(ShiftState);
         }
