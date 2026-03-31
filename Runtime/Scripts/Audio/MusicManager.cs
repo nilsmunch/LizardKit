@@ -15,6 +15,7 @@ namespace GeckoKit.AudioKit
         protected override void Awake()
         {
             base.Awake();
+            Source.loop = true;
             Source.volume = MusicVolumeSlider.Preload();
             PlayNewTrack();
         }
@@ -23,9 +24,14 @@ namespace GeckoKit.AudioKit
         public void PlayNewTrack()
         {
             var candidates = Tracks.Where(a => a != Source.clip).ToArray();
+            if (candidates.Length == 0)
+            {
+                Source.Play();
+                return;
+            }
+
             var winner = candidates[Random.Range(0,candidates.Length)];
             Source.clip = winner;
-            Source.loop = true;
             Source.Play();
         }
     }
