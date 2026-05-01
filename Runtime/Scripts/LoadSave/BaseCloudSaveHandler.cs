@@ -90,5 +90,31 @@ namespace GeckoKit.LoadSave
             
             Log($"{saveFile} Saved to {FilePos}");
         }
+        
+        public string GetSaveFileAsString(TSaveFile saveFile)
+        {
+            foreach (var dataHandler in Handlers)
+            {
+                dataHandler.SaveToFile(saveFile);
+            }
+
+            using var stream = new MemoryStream();
+            var bf = new BinaryFormatter();
+
+            bf.Serialize(stream, saveFile);
+
+            var bytes = stream.ToArray();
+            return System.Convert.ToBase64String(bytes);
+        }
+        
+        public TSaveFile GetSaveFileFromString(string saveString)
+        {
+            var bytes = System.Convert.FromBase64String(saveString);
+
+            using var stream = new MemoryStream(bytes);
+            var bf = new BinaryFormatter();
+
+            return bf.Deserialize(stream) as TSaveFile;
+        }
     }
 }
