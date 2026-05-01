@@ -106,7 +106,9 @@ namespace GeckoKit.LoadSave
             var bytes = stream.ToArray();
             return System.Convert.ToBase64String(bytes);
         }
-        
+
+        public abstract TSaveFile CompareAndMergeSaves(TSaveFile localSave, TSaveFile remoteSave);
+
         public TSaveFile GetSaveFileFromString(string saveString)
         {
             var bytes = System.Convert.FromBase64String(saveString);
