@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace MetaMorph.CoreGame.Credits
+namespace LizardKit.Credits
 {
     public static class PatreonCreditsLoader
     {
