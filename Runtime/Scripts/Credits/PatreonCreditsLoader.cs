@@ -7,7 +7,7 @@ namespace LizardKit.Credits
 {
     public static class PatreonCreditsLoader
     {
-        private const string Url = "https://connect.lewdlizard.com/patreon/api/credits.json";
+        private const string Url = "https://connect.lewdlizard.com/api/connect/credits.json";
         public static List<string> PatreonSupporters = new();
         public static List<string> PatreonVipSupporters = new();
         
