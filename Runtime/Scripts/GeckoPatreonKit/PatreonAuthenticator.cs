@@ -227,6 +227,14 @@ namespace LizardKit.GeckoPatreonKit
         {
             return _lastPlayerPayload is { tier_level: >= 1 };
         }
+        public static bool IsMidTierOrAbove()
+        {
+            return _lastPlayerPayload is { tier_level: >= 2 };
+        }
+        public static bool IsTopTier()
+        {
+            return _lastPlayerPayload is { tier_level: >= 3 };
+        }
 
         public static string GetPatreonId()
         {
