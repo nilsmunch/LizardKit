@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace GeckoPatreonKit
+namespace LizardKit.GeckoPatreonKit
 {
     public static class SubscriptionSigner
     {

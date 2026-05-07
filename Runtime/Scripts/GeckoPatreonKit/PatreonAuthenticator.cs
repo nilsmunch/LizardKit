@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using GeckoPatreonKit;
 using LizardKit.Scaffolding;
 using TMPro;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-namespace GeckoPatreonKit
+namespace LizardKit.GeckoPatreonKit
 {
     public class PatreonAuthenticator : BaseManager<PatreonAuthenticator>
     {
@@ -45,6 +46,11 @@ namespace GeckoPatreonKit
             }
 
             return PlayerPrefs.GetString("PlayerId", Guid.NewGuid().ToString());
+        }
+
+        public void TogglePanel()
+        {
+            gameObject.SetActive(!gameObject.activeSelf);
         }
 
         #region USER_CHECK
@@ -149,11 +155,11 @@ namespace GeckoPatreonKit
             var message = tierLevel switch
             {
                 -1 =>
-                    "If you wish to unlock more content and support the developers, you can do so through our Patreon. This unlocks bonus content across all our games.",
+                    "If you wish to unlock more content and support the developers, you can do so through our Patreon. "+package.unlockBenefitDescription,
                 0 =>
-                    "<color=green>Free User Detected</color>\nThank you for connecting your Patreon Account.\nIt seems you are not currently supporting the LizardFactory team, so there are no benefits.",
+                    "<color=green>Free User Detected</color>\nThank you for connecting your Patreon Account.\n"+package.freeUserBenefits,
                 > 0 =>
-                    $"<color=orange>Supporter Detected</color>\nThank you for connecting your Patreon Account.\nYou are a tier {tierLevel} supporter - Thank you so much!\nYour bonus content has been unlocked.",
+                    $"<color=orange>Supporter Detected</color>\nThank you for connecting your Patreon Account.\nYou are a tier {tierLevel} supporter - Thank you so much!\n"+package.paidUserBenefits,
                 _ => ""
             };
             connectLabel.text = message;

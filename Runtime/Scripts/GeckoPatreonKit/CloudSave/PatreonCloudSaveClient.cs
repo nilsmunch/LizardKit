@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
-namespace GeckoPatreonKit.CloudSave
+namespace LizardKit.GeckoPatreonKit.CloudSave
 {
     public class PatreonCloudSaveClient : BaseManager<PatreonCloudSaveClient>
     {
