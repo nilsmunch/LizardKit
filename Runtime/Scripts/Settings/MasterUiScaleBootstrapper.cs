@@ -6,7 +6,7 @@ namespace LizardKit.Settings
     {
         private void Awake()
         {
-            MasterUiScaleSlider.Preload();
+            MasterUiScaleSlider.GlobalPreload();
         }
     }
 }

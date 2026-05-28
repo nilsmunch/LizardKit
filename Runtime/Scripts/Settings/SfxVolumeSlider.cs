@@ -8,16 +8,13 @@ namespace LizardKit.Settings
     public class SfxVolumeSlider : SliderSetting
     {
         public List<AudioClip> TestEffects;
-        public static float Preload()
+        public static float GlobalPreload()
         {
             return PlayerPrefs.GetFloat("sfx_volume", 0.75f);
         }
 
-        private void OnEnable()
-        {
-            Slider ??= GetComponentInChildren<Slider>();
-            if (Slider) Slider.value = Preload();
-        }
+        protected override float StartingValue() => PlayerPrefs.GetFloat("sfx_volume", 0.75f);
+
 
         protected override void ValueChanged(float val)
         {

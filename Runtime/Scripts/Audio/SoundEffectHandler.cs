@@ -16,7 +16,7 @@ namespace LizardKit.Audio
         protected override void Awake()
         {
             base.Awake();
-            Volume = SfxVolumeSlider.Preload();
+            Volume = SfxVolumeSlider.GlobalPreload();
             _sources = GetComponents<AudioSource>().ToList();
         }
 

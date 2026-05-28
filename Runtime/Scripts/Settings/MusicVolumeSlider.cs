@@ -6,16 +6,15 @@ namespace LizardKit.Settings
 {
     public class MusicVolumeSlider : SliderSetting
     {
-        public static float Preload()
-        {
-            return PlayerPrefs.GetFloat("bgm_volume", 0.5f);
-        }
+        public static float Preload() => PlayerPrefs.GetFloat("bgm_volume", 0.5f);
 
         private void OnEnable()
         {
             Slider ??= GetComponentInChildren<Slider>();
             if (Slider) Slider.value = Preload();
         }
+
+        protected override float StartingValue() => PlayerPrefs.GetFloat("bgm_volume", 0.5f);
 
         protected override void ValueChanged(float val)
         {

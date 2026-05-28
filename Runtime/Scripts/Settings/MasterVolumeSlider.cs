@@ -5,16 +5,19 @@ namespace LizardKit.Settings
 {
     public class MasterVolumeSlider : SliderSetting
     {
-        public static void Preload()
+        public static void GlobalPreload()
         {
             AudioListener.volume = PlayerPrefs.GetFloat("master_volume", 0.5f);
         }
 
-        protected override void Awake()
+        public override void Preload()
         {
-            base.Awake();
-            Slider.value = AudioListener.volume;
+            base.Preload();
+            AudioListener.volume = PlayerPrefs.GetFloat("master_volume", 0.5f);
         }
+
+        protected override float StartingValue() => AudioListener.volume;
+
 
         protected override void ValueChanged(float val)
         {

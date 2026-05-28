@@ -10,7 +10,7 @@ namespace LizardKit.Settings
         public ModalWindow KeepOrCancel;
         
         public static int UiScale = 1;
-        public static void Preload()
+        public static void GlobalPreload()
         {
             UiScale = PlayerPrefs.GetInt("ui_scale",1);
             UpdateScale();
@@ -49,6 +49,8 @@ namespace LizardKit.Settings
             UpdateScale();
             Slider.value = UiScale;
         }
+
+        protected override float StartingValue() => UiScale;
 
         protected override void Awake()
         {

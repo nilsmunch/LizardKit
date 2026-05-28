@@ -6,11 +6,21 @@ namespace LizardKit.Settings
 {
     public abstract class SliderSetting : MonoBehaviour
     {
-        public Slider Slider;
+        protected Slider Slider;
+        private bool _preloaded;
+
+        protected abstract float StartingValue();
+
+        public virtual void Preload()
+        {
+            if (_preloaded) return;
+            _preloaded = true;
+            SecureSlider();
+            Slider.value = StartingValue();
+        }
 
         protected virtual void Awake()
         {
-            SecureSlider();
             Slider.onValueChanged.AddListener(ValueChanged);
         }
 
