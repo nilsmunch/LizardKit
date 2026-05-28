@@ -8,6 +8,8 @@ namespace LizardKit.Settings
     public abstract class SettingToggle : MonoBehaviour
     {
         private Toggle _toggle;
+        private bool _preloaded;
+        private string _settingsKey;
 
         protected virtual bool ShouldStartEnabled() => false;
 
@@ -16,17 +18,24 @@ namespace LizardKit.Settings
             return GetType().Name;
         }
 
+        public virtual void Preload()
+        {
+            if (_preloaded) return;
+            _preloaded = true;
+            _toggle = GetComponent<Toggle>();
+            _settingsKey = SettingKey(); 
+            _toggle.isOn = PlayerPrefs.GetInt(_settingsKey, (ShouldStartEnabled() ? 1:0)) == 1;
+        }
+
         private void Start()
         {
-            var key = SettingKey(); 
-            _toggle = GetComponent<Toggle>();
+            Preload();
             if (!_toggle)
             {
                 Debug.LogError($"Toggle not found in {gameObject.name}");
                 return;
             }
 
-            _toggle.isOn = PlayerPrefs.GetInt(key, (ShouldStartEnabled() ? 1:0)) == 1;
             _toggle.onValueChanged.AddListener(ShiftState);
         }
 
@@ -41,8 +50,7 @@ namespace LizardKit.Settings
 
         protected virtual void ShiftState(bool on)
         {
-            var key = SettingKey(); 
-            PlayerPrefs.SetInt(key,on ? 1 : 0);
+            PlayerPrefs.SetInt(_settingsKey,on ? 1 : 0);
             SoundEffectHandler.Play("WoodClick"+(on ? "" : "Off"));
         }
     

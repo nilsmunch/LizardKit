@@ -41,14 +41,16 @@ namespace LizardKit.Scaffolding
 
         #region LOGGING
 
-        protected void Log(string log)
+        // ReSharper disable Unity.PerformanceAnalysis
+        public void Log(string log)
         {
             #if UNITY_EDITOR
             if (debugLog) Debug.Log("<color=#00FFFF><b>"+typeof(T)+"</b></color>: "+log);
             #endif
         }
 
-        protected void LogError(string log)
+        // ReSharper disable Unity.PerformanceAnalysis
+        public void LogError(string log)
         {
             #if UNITY_EDITOR
             if (debugLog) Debug.LogError("<color=#00FFFF><b>"+typeof(T)+"</b></color>: "+log);
