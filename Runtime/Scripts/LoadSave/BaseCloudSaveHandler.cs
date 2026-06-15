@@ -45,7 +45,7 @@ namespace GeckoKit.LoadSave
         }
 
         [Button]
-        private void LoadFirstFile()
+        protected void LoadFirstFile()
         {
             var list = ListSaveFiles();
             var saveFile = list.FirstOrDefault();
