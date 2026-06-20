@@ -9,11 +9,18 @@ namespace LizardKit.Scaffolding
         [SerializeField] protected bool debugLog;
         protected bool Persist;
 
-        public static T Instance => _instance != null ? _instance : null;
-
-        protected static void ForceIn(T forced)
+        public static T Instance
         {
-            _instance = forced;
+            get
+            {
+                if (_instance) return _instance;
+                #if UNITY_2023_1_OR_NEWER
+                _instance = (T)FindFirstObjectByType(typeof(T));
+                #else
+                _instance = (T)FindObjectOfType(typeof(T));
+                #endif
+                return _instance;
+            }
         }
 
         protected virtual void Awake()
@@ -28,6 +35,8 @@ namespace LizardKit.Scaffolding
             _instance = this as T;
             if (Persist) DontDestroyOnLoad(gameObject);
         }
+        
+        
 
         protected virtual void OnEnable()
         {
@@ -37,6 +46,11 @@ namespace LizardKit.Scaffolding
         protected virtual void OnDestroy()
         {
             _instance = null;
+        }
+        
+        protected static void ForceIn(T forced)
+        {
+            _instance = forced;
         }
 
         #region LOGGING
