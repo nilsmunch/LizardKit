@@ -21,6 +21,7 @@ namespace LizardKit.Settings
 
         protected virtual void Awake()
         {
+            SecureSlider();
             Slider.onValueChanged.AddListener(ValueChanged);
         }
 
