@@ -1,5 +1,6 @@
 using LizardKit.Audio;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LizardKit.Settings
 {
@@ -12,8 +13,14 @@ namespace LizardKit.Settings
 
         public override void Preload()
         {
-            base.Preload();
             AudioListener.volume = PlayerPrefs.GetFloat("master_volume", 0.5f);
+            base.Preload();
+        }
+        
+        private void OnEnable()
+        {
+            Slider ??= GetComponentInChildren<Slider>();
+            if (Slider) Slider.value = AudioListener.volume;
         }
 
         protected override float StartingValue() => AudioListener.volume;
