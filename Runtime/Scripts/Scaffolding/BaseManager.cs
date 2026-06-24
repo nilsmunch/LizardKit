@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LizardKit.Scaffolding
 {
-    public abstract class BaseManager<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
     {
         private static T _instance;
         [SerializeField] protected bool debugLog;
@@ -19,8 +19,14 @@ namespace LizardKit.Scaffolding
                 #else
                 _instance = (T)FindObjectOfType(typeof(T));
                 #endif
+                _instance.Prepare();
                 return _instance;
             }
+        }
+
+        protected virtual void Prepare()
+        {
+            if (Persist) DontDestroyOnLoad(gameObject);
         }
 
         protected virtual void Awake()
@@ -31,9 +37,9 @@ namespace LizardKit.Scaffolding
                 return;
             }
 
-            if (_instance != null) return;
+            if (_instance) return;
             _instance = this as T;
-            if (Persist) DontDestroyOnLoad(gameObject);
+            Prepare();
         }
         
         
