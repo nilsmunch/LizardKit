@@ -2,45 +2,45 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using GeckoKit.LoadSave;
 using LizardKit.DebugButton;
+using LizardKit.Scaffolding;
 using UnityEngine;
 
-namespace GeckoKit.LoadSave
+namespace LizardKit.LoadSave
 {
     public abstract class BaseCloudSaveHandler<THandler, TSaveFile> 
         : BaseLoadSaveHandler<THandler, TSaveFile>
-        where THandler : MonoBehaviour
+        where THandler : BaseManager<THandler>
         where TSaveFile : BaseSaveFile, new()
     {
-        private const string FILENAME = "/SteamCloudSave.sav";
-        private static string FilePos => Application.persistentDataPath + FILENAME;
+        private const string Filename = "/SteamCloudSave.sav";
+        private static string FilePos => Application.persistentDataPath + Filename;
         
         public override List<TSaveFile> ListSaveFiles()
         {
             var list = new List<TSaveFile>();
-            if (File.Exists(FilePos))
+            if (!File.Exists(FilePos)) return list;
+            var bf = new BinaryFormatter();
+            var stream = new FileStream(FilePos, FileMode.Open);
+            TSaveFile data = null;
+            try
             {
-                var bf = new BinaryFormatter();
-                var stream = new FileStream(FilePos, FileMode.Open);
-                TSaveFile data = null;
-                try
-                {
-                    data = bf.Deserialize(stream) as TSaveFile;
-                }
-                catch
-                {
-                    // ignored
-                };
-
-                if (data == null)
-                {
-                    LogError("Broken file at "+FilePos);
-                    return list;
-                }
-
-                list.Add(data);
-                stream.Close();
+                data = bf.Deserialize(stream) as TSaveFile;
             }
+            catch
+            {
+                // ignored
+            };
+
+            if (data == null)
+            {
+                LogError("Broken file at "+FilePos);
+                return list;
+            }
+
+            list.Add(data);
+            stream.Close();
             return list;
         }
 

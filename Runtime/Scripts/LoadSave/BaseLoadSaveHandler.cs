@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GeckoKit.LoadSave;
 using GeckoKit.LoadSave.Handlers;
 using LizardKit.Scaffolding;
-using UnityEngine;
 
-namespace GeckoKit.LoadSave
+namespace LizardKit.LoadSave
 {
     public abstract class BaseLoadSaveHandler<T, TSaveFile> : BaseManager<T>
-        where T : MonoBehaviour
+        where T : BaseManager<T>
         where TSaveFile : BaseSaveFile
     {
         protected bool _readyToSave;
