@@ -3,23 +3,29 @@ using UnityEngine;
 
 namespace LizardKit.Scaffolding
 {
-    public abstract class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
+    public abstract class BaseManager<T> : MonoBehaviour
+        where T : BaseManager<T>
     {
         private static T _instance;
         [SerializeField] protected bool debugLog;
         protected bool Persist;
+        private bool _prepared;
 
         public static T Instance
         {
             get
             {
-                if (_instance) return _instance;
-                #if UNITY_2023_1_OR_NEWER
-                _instance = (T)FindFirstObjectByType(typeof(T));
-                #else
-                _instance = (T)FindObjectOfType(typeof(T));
-                #endif
-                _instance.Prepare();
+                if (_instance)
+                    return _instance;
+
+#if UNITY_2023_1_OR_NEWER
+                _instance = FindFirstObjectByType<T>();
+#else
+                _instance = FindObjectOfType<T>();
+#endif
+
+                if (_instance) _instance.EnsurePrepared();
+
                 return _instance;
             }
         }
@@ -28,6 +34,14 @@ namespace LizardKit.Scaffolding
         {
             if (Persist) DontDestroyOnLoad(gameObject);
         }
+
+        private void EnsurePrepared()
+        {
+            if (_prepared) return;
+            _prepared = true;
+            Prepare();
+        }
+
 
         protected virtual void Awake()
         {
