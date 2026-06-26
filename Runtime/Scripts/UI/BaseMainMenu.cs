@@ -22,6 +22,13 @@ namespace LizardKit.UI
                 page.gameObject.SetActive(page.key == pageRequest);
             }
         }
+        public virtual void GoToRoot()
+        {
+            foreach (var page in _menuPages)
+            {
+                page.gameObject.SetActive(page.rootPanel);
+            }
+        }
         
         public void QuitToDesktop()
         {
