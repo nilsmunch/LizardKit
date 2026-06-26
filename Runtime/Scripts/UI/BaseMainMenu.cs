@@ -2,12 +2,14 @@
 using System.Linq;
 using LizardKit.Settings;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace LizardKit.UI
 {
     public class BaseMainMenu : MonoBehaviour
     {
         private List<BaseMainMenuPanel> _menuPages;
+        public string gameSceneName = "MainGame";
 
         protected virtual void Awake()
         {
@@ -16,6 +18,12 @@ namespace LizardKit.UI
             GoToRoot();
         }
 
+
+        public virtual void StartGame()
+        {
+            SceneManager.LoadScene(gameSceneName);
+        }
+        
         public virtual void ShiftPage(string pageRequest)
         {
             foreach (var page in _menuPages)
