@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LizardKit.Settings;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace LizardKit.UI
     {
         private List<BaseMainMenuPanel> _menuPages;
         public string gameSceneName = "MainGame";
+        private string _showingPanel;
 
         protected virtual void Awake()
         {
@@ -26,6 +28,12 @@ namespace LizardKit.UI
         
         public virtual void ShiftPage(string pageRequest)
         {
+            if (_showingPanel == pageRequest)
+            {
+                GoToRoot();
+                return;
+            }
+
             foreach (var page in _menuPages)
             {
                 page.gameObject.SetActive(page.key == pageRequest);
@@ -37,6 +45,8 @@ namespace LizardKit.UI
             {
                 page.gameObject.SetActive(page.rootPanel);
             }
+
+            _showingPanel = string.Empty;
         }
         
         public void QuitToDesktop()
