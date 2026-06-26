@@ -11,8 +11,9 @@ namespace LizardKit.UI
 
         protected virtual void Awake()
         {
-            _menuPages = FindObjectsByType<BaseMainMenuPanel>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
             MasterVolumeSlider.GlobalPreload();
+            _menuPages = FindObjectsByType<BaseMainMenuPanel>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+            GoToRoot();
         }
 
         public virtual void ShiftPage(string pageRequest)
