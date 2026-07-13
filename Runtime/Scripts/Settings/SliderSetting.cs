@@ -16,13 +16,14 @@ namespace LizardKit.Settings
             if (_preloaded) return;
             _preloaded = true;
             SecureSlider();
+            if (!Slider) return;
             Slider.value = StartingValue();
+            Slider.onValueChanged.AddListener(ValueChanged);
         }
 
         protected virtual void Awake()
         {
             SecureSlider();
-            Slider.onValueChanged.AddListener(ValueChanged);
         }
 
         protected void SecureSlider()
