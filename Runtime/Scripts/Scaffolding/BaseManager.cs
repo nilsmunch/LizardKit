@@ -53,7 +53,7 @@ namespace LizardKit.Scaffolding
 
             if (_instance) return;
             _instance = this as T;
-            Prepare();
+            EnsurePrepared();
         }
         
         
