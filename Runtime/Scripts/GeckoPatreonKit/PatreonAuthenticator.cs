@@ -15,7 +15,17 @@ namespace LizardKit.GeckoPatreonKit
         public PatreonAuthPackage package; 
         private static Payload _lastPlayerPayload;
         private string _playerId;
-        private bool _patreonCheckArmed;
+        private const string PatreonCheckArmedKey = "PatreonCheckArmed";
+
+        private bool PatreonCheckArmed
+        {
+            get => PlayerPrefs.GetInt(PatreonCheckArmedKey, 0) == 1;
+            set
+            {
+                PlayerPrefs.SetInt(PatreonCheckArmedKey, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
 
         [Header("Connect UI")]
         public Button connectButton;
@@ -31,10 +41,28 @@ namespace LizardKit.GeckoPatreonKit
             StartCoroutine(CheckConnectData());
         }
 
+        private Coroutine _checkCoroutine;
+
         private void OnApplicationFocus(bool hasFocus)
         {
-            if (!_patreonCheckArmed) return;
-            if (hasFocus) StartCoroutine(CheckConnectData());
+            if (hasFocus)
+                TryCheckAfterReturn();
+        }
+
+        private void OnApplicationPause(bool isPaused)
+        {
+            if (!isPaused)
+                TryCheckAfterReturn();
+        }
+
+        private void TryCheckAfterReturn()
+        {
+            if (!PatreonCheckArmed) return;
+
+            if (_checkCoroutine != null)
+                StopCoroutine(_checkCoroutine);
+
+            _checkCoroutine = StartCoroutine(CheckConnectData());
         }
 
         public static string GetPlayerIdentifier()
@@ -57,6 +85,7 @@ namespace LizardKit.GeckoPatreonKit
         private IEnumerator CheckConnectData()
         {
             connectLabel.text = "Checking user data...";
+            yield return new WaitForSecondsRealtime(0.5f);
 
             Log($"client_uuid={_playerId}");
             // STEP 1: Get nonce
@@ -145,7 +174,7 @@ namespace LizardKit.GeckoPatreonKit
 
             _lastPlayerPayload = data.payload;
             UpdateWithResult(_lastPlayerPayload.tier_level, _lastPlayerPayload.user_name);
-            _patreonCheckArmed = false;
+            PatreonCheckArmed = false;
             onConnected.Invoke();
         }
         #endregion
@@ -167,17 +196,29 @@ namespace LizardKit.GeckoPatreonKit
 
         private static string ConnectUri(string gameSlug, string playerId)
         {
-            return $"https://lewdlizard.com/connect/game/{gameSlug}/{playerId}";
+            return
+                $"https://lewdlizard.com/connect/game/" +
+                $"{UnityWebRequest.EscapeURL(gameSlug)}/" +
+                $"{UnityWebRequest.EscapeURL(playerId)}";
         }
 
-        private static string VerifyUri(string playerId, long timestamp, string nonce, string signature)
+        private static string VerifyUri(
+            string playerId,
+            long timestamp,
+            string nonce,
+            string signature)
         {
-            return $"https://lewdlizard.com/api/connect/verify/{playerId}?timestamp={timestamp}&nonce={nonce}&signature={signature}";
+            return
+                $"https://lewdlizard.com/api/connect/verify/" +
+                $"{UnityWebRequest.EscapeURL(playerId)}" +
+                $"?timestamp={timestamp}" +
+                $"&nonce={UnityWebRequest.EscapeURL(nonce)}" +
+                $"&signature={UnityWebRequest.EscapeURL(signature)}";
         }
 
         private void ProcessConnect()
         {
-            _patreonCheckArmed = true;
+            PatreonCheckArmed = true;
             Application.OpenURL(ConnectUri(package.gameSlug, _playerId));
         }
 
@@ -243,7 +284,8 @@ namespace LizardKit.GeckoPatreonKit
 
         public static bool Connected()
         {
-            return _lastPlayerPayload != null || !string.IsNullOrEmpty(_lastPlayerPayload?.patreon_id);
+            return _lastPlayerPayload != null &&
+                   !string.IsNullOrEmpty(_lastPlayerPayload.patreon_id);
         }
     }
 }
