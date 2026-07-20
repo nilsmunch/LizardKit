@@ -16,6 +16,7 @@ namespace LizardKit.GeckoPatreonKit
         private static Payload _lastPlayerPayload;
         private string _playerId;
         private const string PatreonCheckArmedKey = "PatreonCheckArmed";
+        private const string PatreonPlayerIdKey = "PlayerId";
 
         private bool PatreonCheckArmed
         {
@@ -67,13 +68,13 @@ namespace LizardKit.GeckoPatreonKit
 
         public static string GetPlayerIdentifier()
         {
-            if (!PlayerPrefs.HasKey("PlayerId"))
+            if (!PlayerPrefs.HasKey(PatreonPlayerIdKey))
             {
-                PlayerPrefs.SetString("PlayerId", Guid.NewGuid().ToString());
+                PlayerPrefs.SetString(PatreonPlayerIdKey, Guid.NewGuid().ToString());
                 PlayerPrefs.Save();
             }
 
-            return PlayerPrefs.GetString("PlayerId", Guid.NewGuid().ToString());
+            return PlayerPrefs.GetString(PatreonPlayerIdKey, Guid.NewGuid().ToString());
         }
 
         public void TogglePanel()
@@ -90,6 +91,7 @@ namespace LizardKit.GeckoPatreonKit
             Log($"client_uuid={_playerId}");
             // STEP 1: Get nonce
             string nonce;
+            long timestamp;
             
             using (var nonceRequest = UnityWebRequest.Get($"https://lewdlizard.com/api/connect/challenge/{_playerId}"))
             {
@@ -106,6 +108,7 @@ namespace LizardKit.GeckoPatreonKit
                 Log(nonceRequest.downloadHandler.text);
                 var nonceResponse = JsonUtility.FromJson<NonceResponse>(nonceRequest.downloadHandler.text);
                 nonce = nonceResponse?.nonce;
+                timestamp = nonceResponse?.timestamp ?? DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
                 if (string.IsNullOrEmpty(nonce))
                 {
@@ -116,8 +119,11 @@ namespace LizardKit.GeckoPatreonKit
             }
 
             // STEP 2: Sign request
-            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            string signature = SubscriptionSigner.CreateSignature(_playerId, timestamp, nonce);
+            string signature =
+                SubscriptionSigner.CreateSignature(
+                    _playerId,
+                    timestamp,
+                    nonce);
 
             // STEP 3: Verify request
             Log($"Using nonce {nonce}");
@@ -261,6 +267,7 @@ namespace LizardKit.GeckoPatreonKit
         public class NonceResponse
         {
             public string nonce;
+            public long timestamp;
         }
         #endregion
 
