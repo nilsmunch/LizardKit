@@ -9,46 +9,49 @@ public enum InputMode
     Touch
 }
 
-public class InputModeDetector : BaseManager<InputModeDetector>
+namespace LizardKit.Devices
 {
-    public List<GameObject> MobileOnlyButtons;
-    public static InputMode Current { get; private set; } = InputMode.MouseKeyboard;
-
-    protected override void Awake()
+    public class InputModeDetector : BaseManager<InputModeDetector>
     {
-        base.Awake();
-        
-        #if UNITY_ANDROID
+        public List<GameObject> mobileOnlyButtons;
+        public static InputMode Current { get; private set; } = InputMode.MouseKeyboard;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+#if UNITY_ANDROID
         SetMode(InputMode.Touch);
         this.enabled = false;
-        #endif
-    }
-
-    private void Update()
-    {
-        if (Touchscreen.current != null &&
-            Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
-        {
-            SetMode(InputMode.Touch);
+#endif
         }
 
-        if ((Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) ||
-            (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame))
+        private void Update()
         {
-            SetMode(InputMode.MouseKeyboard);
+            if (Touchscreen.current != null &&
+                Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+            {
+                SetMode(InputMode.Touch);
+            }
+
+            if ((Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) ||
+                (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame))
+            {
+                SetMode(InputMode.MouseKeyboard);
+            }
         }
-    }
 
-    private void SetMode(InputMode mode)
-    {
-        if (Current == mode) return;
-
-        Current = mode;
-        Log($"Input mode changed to: {mode}");
-
-        foreach (var button in MobileOnlyButtons)
+        private void SetMode(InputMode mode)
         {
-            button.SetActive(mode == InputMode.Touch);
+            if (Current == mode) return;
+
+            Current = mode;
+            Log($"Input mode changed to: {mode}");
+
+            foreach (var button in mobileOnlyButtons)
+            {
+                button.SetActive(mode == InputMode.Touch);
+            }
         }
     }
 }

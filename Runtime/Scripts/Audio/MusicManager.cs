@@ -5,7 +5,7 @@ using LizardKit.Scaffolding;
 using LizardKit.Settings;
 using UnityEngine;
 
-namespace GeckoKit.AudioKit
+namespace LizardKit.Audio
 {
     public class MusicManager : BaseManager<MusicManager>
     {
@@ -16,7 +16,7 @@ namespace GeckoKit.AudioKit
         {
             base.Awake();
             Source.loop = true;
-            Source.volume = MusicVolumeSlider.Preload();
+            MusicVolumeSlider.GlobalPreload();
             PlayNewTrack();
         }
 
@@ -30,7 +30,7 @@ namespace GeckoKit.AudioKit
                 return;
             }
 
-            var winner = candidates[Random.Range(0,candidates.Length)];
+            var winner = candidates[UnityEngine.Random.Range(0,candidates.Length)];
             Source.clip = winner;
             Source.Play();
         }
