@@ -33,6 +33,8 @@ namespace LizardKit.Credits
 
         [Header("Spacing")] public int linesAfterEntry = 1;
         public int linesAfterSectionTitle = 1;
+        
+        public bool skipEmptyLines = true;
 
         protected virtual List<CreditEntry> GetCredits()
         {
@@ -115,7 +117,15 @@ namespace LizardKit.Credits
 
             foreach (var credit in credits)
             {
-                if (string.IsNullOrEmpty(credit.Name.Trim())) continue;
+                if (string.IsNullOrEmpty(credit.Name.Trim()))
+                {
+                    if (!skipEmptyLines)
+                    {
+                        AppendBlankLines(sb, 1);
+                    }
+
+                    continue;
+                }
                 sb.AppendLine($"<size={roleSize}><color={roleColor}>{credit.Title}</color></size>");
                 sb.AppendLine($"<size={nameSize}><color={nameColor}><b>{credit.Name}</b></color></size>");
 
