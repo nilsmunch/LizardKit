@@ -18,7 +18,6 @@ namespace LizardKit.Settings
             SecureSlider();
             if (!Slider) return;
             Slider.value = StartingValue();
-            Slider.onValueChanged.AddListener(ValueChanged);
         }
 
         protected virtual void Awake()
@@ -31,6 +30,8 @@ namespace LizardKit.Settings
             if (Slider) return;
             if (!Slider) Slider = GetComponentInChildren<Slider>(true);
             if (!Slider) Slider = GetComponent<Slider>();
+            Slider.value = StartingValue();
+            Slider.onValueChanged.AddListener(ValueChanged);
         }
 
         protected virtual void ValueChanged(float val)
