@@ -17,6 +17,10 @@ namespace LizardKit.UI
         {
             MasterVolumeSlider.GlobalPreload();
             _menuPages = FindObjectsByType<BaseMainMenuPanel>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+            foreach (var page in _menuPages)
+            {
+                page.PrepareView();
+            }
             GoToRoot();
         }
 

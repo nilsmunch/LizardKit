@@ -6,5 +6,9 @@ namespace LizardKit.UI
     {
         public string key;
         public bool rootPanel;
+
+        public virtual void PrepareView()
+        {
+        }
     }
 }
