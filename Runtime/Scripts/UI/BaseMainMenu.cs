@@ -9,9 +9,9 @@ namespace LizardKit.UI
 {
     public class BaseMainMenu : MonoBehaviour
     {
-        private List<BaseMainMenuPanel> _menuPages;
+        protected List<BaseMainMenuPanel> _menuPages;
         public string gameSceneName = "MainGame";
-        private string _showingPanel;
+        protected string _showingPanel;
 
         protected virtual void Awake()
         {
