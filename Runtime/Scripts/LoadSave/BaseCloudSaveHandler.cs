@@ -66,7 +66,12 @@ namespace LizardKit.LoadSave
                 dataHandler.LoadFromFile(saveFile);
             }
         }
-        
+
+        public override void LoadJson(string json)
+        {
+            
+        }
+
         [Button]
         private void SaveDummyFile()
         {

@@ -5,16 +5,17 @@ namespace LizardKit.LoadSave
 {
     public class TestingSaveFileLoader : MonoBehaviour
     {
+        public IJsonSaveHandler handler;
         public List<TestingSaveFiles> saveFiles = new();
 
         public void LoadFromSaveFile(TestingSaveFiles save)
         {
-            GameLoadManager.LoadFromJson(save.ForceSaveFile);
+            handler.LoadJson(save.ForceSaveFile);
         }
 
         public void SaveToSaveFile(TestingSaveFiles save)
         {
-            var data = GameLoadManager.CurrentSaveData();
+            var data = handler.CurrentSaveJson();
             save.ForceSaveFile = data;
 
 #if UNITY_EDITOR

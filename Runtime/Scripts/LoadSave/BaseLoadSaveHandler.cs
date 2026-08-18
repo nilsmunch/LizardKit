@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using GeckoKit.LoadSave;
 using GeckoKit.LoadSave.Handlers;
+using LizardKit.LoadSave.Debugging;
 using LizardKit.Scaffolding;
 
 namespace LizardKit.LoadSave
 {
-    public abstract class BaseLoadSaveHandler<T, TSaveFile> : BaseManager<T>
+    public abstract class BaseLoadSaveHandler<T, TSaveFile> : BaseManager<T>, IJsonSaveHandler
         where T : BaseManager<T>
         where TSaveFile : BaseSaveFile
     {
@@ -18,6 +19,9 @@ namespace LizardKit.LoadSave
         public abstract List<TSaveFile> ListSaveFiles();
         public abstract void LoadFile(TSaveFile saveFile);
         public abstract void SaveFile(TSaveFile saveFile);
+        public abstract void LoadJson(string json);
+        public abstract string CurrentSaveJson();
+
         #endregion
 
         #region CONSTRUCTORS
@@ -38,5 +42,6 @@ namespace LizardKit.LoadSave
                 .ToArray();
         }
         #endregion
+
     }
 }
