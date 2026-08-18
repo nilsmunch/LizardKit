@@ -1,12 +1,11 @@
 #if UNITY_EDITOR
-using LizardKit.LoadSave;
 using UnityEditor;
 using UnityEngine;
 
 namespace LizardKit.LoadSave
 {
 [CustomEditor(typeof(TestingSaveFileLoader))]
-public class TestingSaveFileLoaderEditor : Editor
+public class TestingSaveFileLoaderEditor : UnityEditor.Editor
 {
     private SerializedProperty saveFilesProp;
 
