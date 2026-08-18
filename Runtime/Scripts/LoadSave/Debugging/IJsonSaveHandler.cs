@@ -1,4 +1,4 @@
-﻿namespace LizardKit.LoadSave.Debugging
+﻿namespace LizardKit.LoadSave
 {
     public interface IJsonSaveHandler
     {
